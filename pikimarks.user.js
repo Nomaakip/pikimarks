@@ -30,17 +30,22 @@
     }
 
     function bookmark(likeForm) {
-        const link = document.createElement("a");
+        const link = document.createElement("img");
+        link.src = "https://p.yusukekamiyamane.com/icon/search/fugue/icons-32/bookmark.png";
+        link.style.height = '16px';
+        link.style.width = '16px';
+        link.style.verticalAlign = 'middle';
+        link.style.filter = "grayscale(1)";
+
         const text = document.createTextNode("bookmark");
         const postId = likeForm.dataset.postId;
         var localfavs = JSON.parse(localStorage.getItem('favorites') || "[]");
-        link.appendChild(text);
         link.onclick = function () {
             favorite(postId, link);
         };
         for (let o = 0; o < localfavs.length; o++) {
             if (postId == localfavs[o]) {
-                link.textContent = "bookmarked";
+                link.style.filter = "grayscale(0)";
             }
         }
         likeForm.after(link);
@@ -53,11 +58,11 @@
         if (index > -1) {
             localfavs.splice(index, 1);
             console.log("unfavorited");
-            clicked.textContent = "bookmark";
+            clicked.style.filter = "grayscale(1)";
         } else {
             localfavs.push(post);
             console.log("favorited");
-            clicked.textContent = "bookmarked";
+            clicked.style.filter = "grayscale(0)";
         }
         localStorage.setItem('favorites', JSON.stringify(localfavs));
     };
@@ -87,7 +92,7 @@
         });
 
         // observe specified container ...
-        observer.observe(document.querySelector(".tab-contents"), {
+        observer.observe(document.querySelector(".tab-contents, .posts-cont"), {
             childList: true,
             subtree: true
         });
